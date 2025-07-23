@@ -1,0 +1,34 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:gravity="center">
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:layout_marginBottom="24dp"/>
+
+    <Button
+        android:id="@+id/btnNormal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Normal Assignment (5 points)"
+        android:layout_marginBottom="16dp"/>
+
+    <Button
+        android:id="@+id/btnExcellent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Excellent Assignment (7 points)"
+        android:layout_marginBottom="16dp"/>
+
+    <Button
+        android:id="@+id/btnNotDone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Not Done (0 points)"/>
+</LinearLayout>
