@@ -13,22 +13,59 @@
         android:layout_marginBottom="24dp"/>
 
     <Button
-        android:id="@+id/btnNormal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Normal Assignment (5 points)"
-        android:layout_marginBottom="16dp"/>
-
-    <Button
         android:id="@+id/btnExcellent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Excellent Assignment (7 points)"
+        android:textColor="#D9FFFFF3"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:background="@drawable/gold_button_shape"
+        android:layout_marginBottom="16dp"
+        android:elevation="8dp"
+        android:letterSpacing="0.02"
+        android:backgroundTintMode="src_over"
+        />
+
+
+    <Button
+        android:id="@+id/btnNormal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Normal Assignment (5 points)"
+        android:textColor="#A2F3FF"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:background="@drawable/blue_button_shape"
+        android:elevation="8dp"
+        android:letterSpacing="0.02"
         android:layout_marginBottom="16dp"/>
 
     <Button
         android:id="@+id/btnNotDone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Not Done (0 points)"/>
+        android:text="Not Done (0 points)"
+        android:textColor="#E5ECED"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:background="@drawable/dont_button_shape"
+        android:elevation="8dp"
+        android:letterSpacing="0.02"
+        />
+
+
+    <Button
+        android:id="@+id/btnAI"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="AI (-2)"
+        android:textColor="#BCB1B1"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:background="@drawable/red_button_shape"
+        android:elevation="8dp"
+        android:letterSpacing="0.02"
+        android:layout_marginTop="16dp"/>
+
 </LinearLayout>
