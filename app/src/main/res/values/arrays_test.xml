@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="assignment_options">
+        <item>Excellent Assignment (7 points)</item>
+        <item>Normal Assignment (5 points)</item>
+        <item>Not Done (0 points)</item>
+        <item>AI (-2)</item>
+    </string-array>
+</resources>

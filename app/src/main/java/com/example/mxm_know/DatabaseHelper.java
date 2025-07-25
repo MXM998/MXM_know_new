@@ -24,6 +24,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_PHONE = "phone";
     public static final String COLUMN_POINTS = "points";
     public static final String COLUMN_BATCH_ID_FK = "batch_id";
+    public static final String COLUMN_IS_DONE = "is_done";
+
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -42,9 +44,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + COLUMN_STUDENT_NAME + " TEXT, "
                 + COLUMN_PHONE + " TEXT, "
                 + COLUMN_POINTS + " INTEGER DEFAULT 0, "
+                + COLUMN_IS_DONE + " INTEGER DEFAULT 0, "
                 + COLUMN_BATCH_ID_FK + " INTEGER, "
                 + "FOREIGN KEY(" + COLUMN_BATCH_ID_FK + ") REFERENCES "
-                + TABLE_BATCHES + "(" + COLUMN_BATCH_ID + "))";
+                + TABLE_BATCHES + "(" + COLUMN_BATCH_ID + "))"
+                ;
         db.execSQL(createStudentsTable);
     }
 
@@ -76,33 +80,66 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_STUDENT_NAME, name);
         values.put(COLUMN_PHONE, phone);
         values.put(COLUMN_BATCH_ID_FK, batchId);
+        values.put(COLUMN_IS_DONE, 0);
+
         return db.insert(TABLE_STUDENTS, null, values);
     }
 
-    public void updatePoints(long studentId, int points) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        SQLiteDatabase db_read = this.getReadableDatabase();
-        int pp= 0;
-        ContentValues values = new ContentValues();
-        Cursor cursor =  db_read.query(TABLE_STUDENTS , new String[]{COLUMN_POINTS} , COLUMN_STUDENT_ID + " = ?" ,new String[]  {String.valueOf(studentId)} ,null,null ,null);
-        if (cursor != null && cursor.moveToFirst())
-        {
-            int columnIndex = cursor.getColumnIndex(COLUMN_POINTS);
-            if (columnIndex != -1) {
-                pp = cursor.getInt(columnIndex);
-            }
-            cursor.close();
-        }
-        values.put(COLUMN_POINTS, points + pp);
-        db.update(TABLE_STUDENTS, values,
-                COLUMN_STUDENT_ID + " = ?", new String[]{String.valueOf(studentId)});
-    }
 
+//    public Cursor getStudentsByBatch(long batchId) {
+//        SQLiteDatabase db = this.getReadableDatabase();
+//        return db.query(TABLE_STUDENTS,
+//                new String[]{COLUMN_STUDENT_ID, COLUMN_STUDENT_NAME,
+//                        COLUMN_PHONE, COLUMN_POINTS, COLUMN_IS_DONE},
+//                COLUMN_BATCH_ID_FK + " = ?",
+//                new String[]{String.valueOf(batchId)},
+//                null, null, null);
+//    }
+//
     public Cursor getStudentsByBatch(long batchId) {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.query(TABLE_STUDENTS, null,
                 COLUMN_BATCH_ID_FK + " = ?",
                 new String[]{String.valueOf(batchId)},
                 null, null, null);
+    }
+    public void addStudentPoints(long studentId, int pointsToAdd) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT " + COLUMN_POINTS + " FROM " + TABLE_STUDENTS +
+                        " WHERE " + COLUMN_STUDENT_ID + " = ?",
+                new String[]{String.valueOf(studentId)});
+
+        int currentPoints = 0;
+        if (cursor.moveToFirst()) {
+            currentPoints = cursor.getInt(0);
+        }
+        cursor.close();
+
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_POINTS, currentPoints + pointsToAdd);
+
+        db.update(TABLE_STUDENTS, values,
+                COLUMN_STUDENT_ID + " = ?",
+                new String[]{String.valueOf(studentId)});
+         if (pointsToAdd == 0)
+         {
+             ContentValues values_2 = new ContentValues();
+             values_2.put(COLUMN_IS_DONE, 1);
+
+             db.update(TABLE_STUDENTS, values_2,
+                     COLUMN_STUDENT_ID + " = ?",
+                     new String[]{String.valueOf(studentId)});
+         }
+         else
+         {
+             ContentValues values_2 = new ContentValues();
+             values_2.put(COLUMN_IS_DONE, 0);
+
+             db.update(TABLE_STUDENTS, values_2,
+                     COLUMN_STUDENT_ID + " = ?",
+                     new String[]{String.valueOf(studentId)});
+         }
+        db.close();
     }
 }

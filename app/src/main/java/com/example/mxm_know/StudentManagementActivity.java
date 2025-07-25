@@ -1,17 +1,17 @@
 package com.example.mxm_know;
 
-
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import androidx.activity.ComponentActivity;
-
 
 public class StudentManagementActivity extends ComponentActivity {
     private long batchId;
@@ -43,13 +43,18 @@ public class StudentManagementActivity extends ComponentActivity {
             studentsContainer.addView(tvEmpty);
         } else {
             while (cursor.moveToNext()) {
-                long studentId = cursor.getLong(cursor.getColumnIndex(DatabaseHelper.COLUMN_STUDENT_ID));
-                String name = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_STUDENT_NAME));
-                int points = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_POINTS));
+                @SuppressLint("Range") long studentId = cursor.getLong(cursor.getColumnIndex(DatabaseHelper.COLUMN_STUDENT_ID));
+                @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_STUDENT_NAME));
+                @SuppressLint("Range") int points = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_POINTS));
+                @SuppressLint("Range") int is_done = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_IS_DONE));
 
                 Button studentButton = new Button(this);
                 studentButton.setText(name + " - Points: " + points);
-                studentButton.setOnClickListener(v -> openAddPointsScreen(studentId));
+                if(is_done == 1)
+                {
+                    studentButton.setBackgroundColor(Color.DKGRAY);
+                }
+                studentButton.setOnClickListener(v -> showPointsDialog(studentId, name));
                 studentsContainer.addView(studentButton);
             }
         }
@@ -61,11 +66,53 @@ public class StudentManagementActivity extends ComponentActivity {
         intent.putExtra("BATCH_ID", batchId);
         startActivity(intent);
     }
+    private void showPointsDialog(long studentId, String studentName) {
 
-    private void openAddPointsScreen(long studentId) {
-        Intent intent = new Intent(this, AddPointsActivity.class);
-        intent.putExtra("STUDENT_ID", studentId);
-        intent.putExtra("BATCH_ID", batchId);
-        startActivity(intent);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View dialogView = getLayoutInflater().inflate(R.layout.activity_add_points, null);
+        builder.setView(dialogView);
+
+
+        TextView tvTitle = dialogView.findViewById(R.id.tvTitle);
+        Button btnExcellent = dialogView.findViewById(R.id.btnExcellent);
+        Button btnNormal = dialogView.findViewById(R.id.btnNormal);
+        Button btnNotDone = dialogView.findViewById(R.id.btnNotDone);
+        Button btnAI = dialogView.findViewById(R.id.btnAI);
+
+        tvTitle.setText("Add points for " + studentName);
+
+        AlertDialog dialog = builder.create();
+
+        btnExcellent.setOnClickListener(v -> {
+            updatePoints(studentId, 7);
+            dialog.dismiss();
+        });
+        btnNormal.setOnClickListener(v -> {
+            updatePoints(studentId, 5);
+            dialog.dismiss();
+        });
+
+        btnNotDone.setOnClickListener(v -> {
+            updatePoints(studentId, 0);
+            dialog.dismiss();
+        });
+
+        btnAI.setOnClickListener(v -> {
+            updatePoints(studentId, -2);
+            dialog.dismiss();
+        });
+
+        dialog.show();
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setWindowAnimations(R.style.DialogAnimation);
+        }
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        }
+    }
+
+    private void updatePoints(long studentId, int pointsToAdd) {
+        dbHelper.addStudentPoints(studentId, pointsToAdd);
+        loadStudents();
     }
 }
