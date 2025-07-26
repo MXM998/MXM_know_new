@@ -33,13 +33,14 @@
             android:elevation="4dp"
             android:fontFamily="sans-serif-medium"
             android:text="Excellent (7 points)"
+            android:drawableStart="@drawable/outline_award_star_24"
             android:textSize="18sp"
             android:textStyle="bold" />
 
         <Button
             android:id="@+id/btnNormal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="59dp"
             android:text="Normal (5 points)"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -47,26 +48,26 @@
             android:elevation="4dp"
             android:layout_marginBottom="16dp"
             android:fontFamily="sans-serif-medium"
-            android:drawableStart="@drawable/ic_check"
-            android:drawablePadding="8dp"/>
+            android:drawableStart="@drawable/normal_home"
+            android:drawablePadding="-19dp"/>
 
         <Button
             android:id="@+id/btnNotDone"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="59dp"
             android:text="Not Done (0 points)"
             android:textSize="18sp"
             android:textStyle="bold"
             android:background="@drawable/dont_button_shape"
             android:elevation="4dp"
             android:fontFamily="sans-serif-medium"
-            android:drawableStart="@drawable/ic_close"
-            android:drawablePadding="8dp"/>
+            android:drawableStart="@drawable/sad_no_home_work"
+            android:drawablePadding="-19dp"/>
 
         <Button
             android:id="@+id/btnAI"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="59dp"
             android:text="AI (-2)"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -74,7 +75,7 @@
             android:elevation="4dp"
             android:layout_marginTop="16dp"
             android:fontFamily="sans-serif-medium"
-            android:drawableStart="@drawable/ic_ai"
-            android:drawablePadding="8dp"/>
+            android:drawableStart="@drawable/ai_min"
+            android:drawablePadding="-19dp"/>
     </LinearLayout>
 </LinearLayout>
