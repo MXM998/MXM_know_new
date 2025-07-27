@@ -1,49 +1,72 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="16dp"
-    android:background="@drawable/modern_gradient_bg">
+    android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/mainLayout"
+
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp"
-        android:background="@drawable/card_background">
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/batch_management_bg"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Batch Management"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:textColor="#333333"
-            android:fontFamily="sans-serif-condensed"
-            android:paddingBottom="16dp"
-            android:drawableStart="@drawable/ic_batch"
-            android:drawablePadding="8dp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
 
         <LinearLayout
-            android:id="@+id/batchesContainer"
+            android:id="@+id/mainLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingTop="16dp"
-            android:divider="@drawable/divider"
-            android:showDividers="middle"/>
+            android:padding="24dp"
+            android:elevation="8dp"
+            android:outlineProvider="background"
+            android:clipToOutline="true">
 
-        <Button
-            android:id="@+id/btnCreateBatch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Create New Batch"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/primary_button_bg"
-            android:textColor="@android:color/white"
-            android:textAllCaps="false"
-            android:fontFamily="sans-serif-medium"
-            android:drawableEnd="@drawable/ic_add"
-            android:drawablePadding="8dp"/>
-    </LinearLayout>
-</ScrollView>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Batch Management"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="#302935"
+                android:fontFamily="sans-serif-condensed"
+                android:paddingBottom="24dp"
+                android:drawableStart="@drawable/ic_batch"
+                android:drawablePadding="12dp"
+                android:drawableTint="#302935"/>
+
+            <LinearLayout
+                android:id="@+id/batchesContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="16dp"
+                android:divider="@drawable/divider"
+                android:showDividers="middle"
+                android:dividerPadding="12dp"/>
+
+            <Button
+                android:id="@+id/btnCreateBatch"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:text="Create New Batch"
+                android:textSize="18sp"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/primary_button_bg"
+                android:textColor="#FFFFFF"
+                android:textAllCaps="false"
+                android:fontFamily="sans-serif-medium"
+                android:drawableEnd="@drawable/ic_add"
+                android:drawablePadding="12dp"
+                android:drawableTint="#FFFFFF"/>
+        </LinearLayout>
+    </ScrollView>
+</FrameLayout>
