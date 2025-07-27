@@ -1,13 +1,13 @@
 package com.example.mxm_know;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.activity.ComponentActivity;
-
+import androidx.activity.OnBackPressedCallback;
 
 public class AddStudentActivity extends ComponentActivity {
     private long batchId;
@@ -20,24 +20,52 @@ public class AddStudentActivity extends ComponentActivity {
 
         batchId = getIntent().getLongExtra("BATCH_ID", -1);
         EditText etName = findViewById(R.id.etStudentName);
-        EditText etPhone = findViewById(R.id.etPhone);
         Button btnAdd = findViewById(R.id.btnAddStudent);
 
-        btnAdd.setOnClickListener(v -> {
-            String name = etName.getText().toString();
-            String phone = etPhone.getText().toString();
+        if (batchId == -1) {
+            Toast.makeText(this, "Invalid batch selection", Toast.LENGTH_SHORT).show();
+            finish();
+        }
 
-            if (!name.isEmpty() && !phone.isEmpty()) {
-                DatabaseHelper dbHelper = new DatabaseHelper(this);
-                dbHelper.addStudent(name, phone, batchId);
-                BackToStuPage();
+        btnAdd.setOnClickListener(v -> {
+            String name = etName.getText().toString().trim();
+
+            if (!name.isEmpty()) {
+                addStudent(name);
+            } else {
+                Toast.makeText(this, "Please enter student name", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                navigateToStudentManagement();
             }
         });
     }
-    private void BackToStuPage()
-    {
+
+    private void addStudent(String name) {
+        DatabaseHelper dbHelper = new DatabaseHelper(this);
+        boolean success = dbHelper.addStudent(name, batchId);
+
+        if (success) {
+            Toast.makeText(this, "Student added successfully", Toast.LENGTH_SHORT).show();
+            navigateToStudentManagement();
+        } else {
+            Toast.makeText(this, "Failed to add student", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void navigateToStudentManagement() {
         Intent intent = new Intent(this, StudentManagementActivity.class);
+
         intent.putExtra("BATCH_ID", batchId);
+
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
         startActivity(intent);
+
+        finish();
     }
 }

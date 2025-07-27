@@ -32,27 +32,6 @@
             android:textColor="#333333"
             android:fontFamily="sans-serif"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Phone Number"
-            android:textSize="16sp"
-            android:textColor="#555555"
-            android:fontFamily="sans-serif"
-            android:layout_marginTop="24dp"
-            android:paddingBottom="4dp"/>
-
-        <EditText
-            android:id="@+id/etPhone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="05xxxxxxx"
-            android:inputType="phone"
-            android:background="@drawable/edittext_bg"
-            android:padding="12dp"
-            android:textColor="#333333"
-            android:fontFamily="sans-serif"/>
-
         <Button
             android:id="@+id/btnAddStudent"
             android:layout_width="match_parent"

@@ -21,7 +21,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String TABLE_STUDENTS = "students";
     public static final String COLUMN_STUDENT_ID = "student_id";
     public static final String COLUMN_STUDENT_NAME = "student_name";
-    public static final String COLUMN_PHONE = "phone";
     public static final String COLUMN_POINTS = "points";
     public static final String COLUMN_BATCH_ID_FK = "batch_id";
     public static final String COLUMN_IS_DONE = "is_done";
@@ -42,7 +41,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String createStudentsTable = "CREATE TABLE " + TABLE_STUDENTS + "("
                 + COLUMN_STUDENT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + COLUMN_STUDENT_NAME + " TEXT, "
-                + COLUMN_PHONE + " TEXT, "
                 + COLUMN_POINTS + " INTEGER DEFAULT 0, "
                 + COLUMN_IS_DONE + " INTEGER DEFAULT 0, "
                 + COLUMN_BATCH_ID_FK + " INTEGER, "
@@ -60,12 +58,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // عمليات الدفعات
-    public long addBatch(String name, String number) {
+    public boolean addBatch(String name, String number) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_BATCH_NAME, name);
         values.put(COLUMN_BATCH_NUMBER, number);
-        return db.insert(TABLE_BATCHES, null, values);
+        db.insert(TABLE_BATCHES, null, values);
+        return true;
     }
 
     public Cursor getAllBatches() {
@@ -74,15 +73,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // عمليات الطلاب
-    public long addStudent(String name, String phone, long batchId) {
+    public boolean addStudent(String name,  long batchId) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_STUDENT_NAME, name);
-        values.put(COLUMN_PHONE, phone);
         values.put(COLUMN_BATCH_ID_FK, batchId);
         values.put(COLUMN_IS_DONE, 0);
-
-        return db.insert(TABLE_STUDENTS, null, values);
+        db.insert(TABLE_STUDENTS, null, values);
+        return true;
     }
 
 
