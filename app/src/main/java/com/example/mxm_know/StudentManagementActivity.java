@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -50,11 +51,26 @@ public class StudentManagementActivity extends ComponentActivity {
         studentsContainer.removeAllViews();
         Cursor cursor = dbHelper.getStudentsByBatch(batchId);
 
+
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        params.setMargins(0, 0, 0, 16); // هامش سفلي 16dp
+
         if (cursor.getCount() == 0) {
             TextView tvEmpty = new TextView(this);
             tvEmpty.setText("No students in this batch");
+            tvEmpty.setTextSize(18);
+            tvEmpty.setTextColor(Color.parseColor("#7B1FA2"));
+            tvEmpty.setGravity(Gravity.CENTER);
+            tvEmpty.setPadding(0, 32, 0, 32);
+
             studentsContainer.addView(tvEmpty);
-        } else {
+        }
+        else
+        {
             while (cursor.moveToNext()) {
                 @SuppressLint("Range") long studentId = cursor.getLong(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_STUDENT_ID));
                 @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_STUDENT_NAME));
@@ -62,10 +78,21 @@ public class StudentManagementActivity extends ComponentActivity {
                 @SuppressLint("Range") int is_done = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_IS_DONE));
 
                 Button studentButton = new Button(this);
+                studentButton.setLayoutParams(params);
                 studentButton.setText(name + " - Points: " + points);
+                studentButton.setTextSize(16);
+                studentButton.setAllCaps(false);
+                studentButton.setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
+                studentButton.setPadding(32, 16, 16, 16);
+                studentButton.setTextColor(Color.parseColor("#FFFFFF"));
+
+
+                studentButton.setBackgroundResource(R.drawable.button_gradient_purple_pink);
+
                 if (is_done == 1) {
-                    studentButton.setBackgroundColor(Color.DKGRAY);
+                    studentButton.setBackgroundResource(R.drawable.buuton_not_doing);
                 }
+
                 studentButton.setOnClickListener(v -> showPointsDialog(studentId, name));
                 studentsContainer.addView(studentButton);
             }
