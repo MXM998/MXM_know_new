@@ -7,14 +7,14 @@
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/app_mxm_icon"
-        android:label="@string/app_name"
+        android:label="@string/MXM_KnowLage"
         android:roundIcon="@mipmap/app_mxm_icon_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MXM_know">
         <activity
             android:name=".BatchManagementActivity"
             android:exported="true"
-            android:label="@string/app_name"
+            android:label="@string/MXM_KnowLage"
             android:theme="@style/Theme.MXM_know">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
