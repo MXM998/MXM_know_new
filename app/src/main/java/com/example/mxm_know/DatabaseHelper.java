@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "knowledge.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     // جداول الدفعات
     public static final String TABLE_BATCHES = "batches";
@@ -24,6 +24,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_POINTS = "points";
     public static final String COLUMN_BATCH_ID_FK = "batch_id";
     public static final String COLUMN_IS_DONE = "is_done";
+    public  static  final String COLUMN_COMBO_7 = "Combo_7";
 
 
     public DatabaseHelper(Context context) {
@@ -43,6 +44,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + COLUMN_STUDENT_NAME + " TEXT, "
                 + COLUMN_POINTS + " INTEGER DEFAULT 0, "
                 + COLUMN_IS_DONE + " INTEGER DEFAULT 0, "
+                + COLUMN_COMBO_7 + " INTEGER DEFAULT 0, "
                 + COLUMN_BATCH_ID_FK + " INTEGER, "
                 + "FOREIGN KEY(" + COLUMN_BATCH_ID_FK + ") REFERENCES "
                 + TABLE_BATCHES + "(" + COLUMN_BATCH_ID + "))"
@@ -104,16 +106,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void addStudentPoints(long studentId, int pointsToAdd) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT " + COLUMN_POINTS +" , "+ COLUMN_IS_DONE + " FROM " + TABLE_STUDENTS +
+        Cursor cursor = db.rawQuery("SELECT " + COLUMN_POINTS +" , "+ COLUMN_IS_DONE + " , " + COLUMN_COMBO_7 + " FROM " + TABLE_STUDENTS +
                         " WHERE " + COLUMN_STUDENT_ID + " = ?",
                 new String[]{String.valueOf(studentId)});
 
 
         int currentPoints = 0;
         int currentPoibnt_is_done = 0;
+        int Cu_Com_7 = 0;
         if (cursor.moveToFirst()) {
             currentPoints = cursor.getInt(0);
             currentPoibnt_is_done = cursor.getInt(1);
+            Cu_Com_7 = cursor.getInt(2);
         }
         cursor.close();
 
@@ -127,17 +131,42 @@ public class DatabaseHelper extends SQLiteOpenHelper {
          {
              ContentValues values_2 = new ContentValues();
              values_2.put(COLUMN_IS_DONE, currentPoibnt_is_done + 1);
-
              db.update(TABLE_STUDENTS, values_2,
                      COLUMN_STUDENT_ID + " = ?",
                      new String[]{String.valueOf(studentId)});
          }
          else
          {
+
              ContentValues values_2 = new ContentValues();
-             values_2.put(COLUMN_IS_DONE, 0);
+             if (currentPoibnt_is_done == 0)
+             {
+                 values_2.put(COLUMN_IS_DONE, 0);
+             }
+             else if(currentPoibnt_is_done > 0)
+             {
+                 values_2.put(COLUMN_IS_DONE, currentPoibnt_is_done -1);
+             }
 
              db.update(TABLE_STUDENTS, values_2,
+                     COLUMN_STUDENT_ID + " = ?",
+                     new String[]{String.valueOf(studentId)});
+         }
+         if (pointsToAdd != 7)
+         {
+             ContentValues values_3 = new ContentValues();
+             values_3.put(COLUMN_COMBO_7, 0);
+
+             db.update(TABLE_STUDENTS, values_3,
+                     COLUMN_STUDENT_ID + " = ?",
+                     new String[]{String.valueOf(studentId)});
+         }
+         if (pointsToAdd == 7)
+         {
+             ContentValues values_3 = new ContentValues();
+             values_3.put(COLUMN_COMBO_7, Cu_Com_7 + 1);
+
+             db.update(TABLE_STUDENTS, values_3,
                      COLUMN_STUDENT_ID + " = ?",
                      new String[]{String.valueOf(studentId)});
          }

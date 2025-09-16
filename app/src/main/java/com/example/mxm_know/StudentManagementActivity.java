@@ -1,10 +1,13 @@
 package com.example.mxm_know;
 
+import android.animation.AnimatorSet;
+import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -15,6 +18,9 @@ import android.widget.TextView;
 
 import androidx.activity.ComponentActivity;
 import androidx.activity.OnBackPressedCallback;
+import android.animation.ObjectAnimator;
+
+
 
 public class StudentManagementActivity extends ComponentActivity {
     private long batchId;
@@ -80,16 +86,21 @@ public class StudentManagementActivity extends ComponentActivity {
                 @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_STUDENT_NAME));
                 @SuppressLint("Range") int points = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_POINTS));
                 @SuppressLint("Range") int is_done = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_IS_DONE));
+                @SuppressLint("Range") int comb_7 = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_COMBO_7));
 
                 Button studentButton = new Button(this);
                 studentButton.setLayoutParams(params);
-                if (is_done == 0)
+                if (is_done == 0 && comb_7 > 0)
                 {
-                    studentButton.setText(name + " - Points: " + points );
+                    studentButton.setText(name + "  Points: " + points + "    Combo7  x" + comb_7 );
+                }
+                else if (is_done == 0)
+                {
+                    studentButton.setText(name + "  Points: " + points );
                 }
                 else
                 {
-                    studentButton.setText(name + " - Points: " + points + "       -" + is_done);
+                    studentButton.setText(name + "  Points: " + points + "       -" + is_done);
                 }
                 studentButton.setTextSize(16);
                 studentButton.setAllCaps(false);
@@ -100,6 +111,11 @@ public class StudentManagementActivity extends ComponentActivity {
 
                 studentButton.setBackgroundResource(R.drawable.button_gradient_purple_pink);
 
+
+                if (comb_7 >= 3)
+                {
+                    applyRotatingBorderAnimation(studentButton);
+                }
                 if (is_done == 1) {
                     studentButton.setBackgroundResource(R.drawable.buuton_not_doing);
                 }
@@ -146,7 +162,10 @@ public class StudentManagementActivity extends ComponentActivity {
 
         tvTitle.setText("Add points for " + studentName);
 
+        applyShineAnimation(btnExcellent);
+
         AlertDialog dialog = builder.create();
+
 
         btnExcellent.setOnClickListener(v -> {
             updatePoints(studentId, 7);
@@ -179,5 +198,68 @@ public class StudentManagementActivity extends ComponentActivity {
     private void updatePoints(long studentId, int pointsToAdd) {
         dbHelper.addStudentPoints(studentId, pointsToAdd);
         loadStudents();
+    }
+    private void applyShineAnimation(Button button) {
+
+        ObjectAnimator alphaAnim = ObjectAnimator.ofFloat(
+                button,
+                "alpha",
+                1.0f,
+                0.7f,
+                1.0f
+        );
+        alphaAnim.setDuration(2000);
+        alphaAnim.setRepeatCount(ObjectAnimator.INFINITE);
+        alphaAnim.setRepeatMode(ObjectAnimator.REVERSE);
+
+        alphaAnim.start();
+    }
+
+
+    // AI
+    private void applyRotatingBorderAnimation(Button button) {
+        GradientDrawable drawable = (GradientDrawable) button.getBackground();
+        if (drawable == null) {
+            drawable = new GradientDrawable();
+            drawable.setShape(GradientDrawable.RECTANGLE);
+            drawable.setCornerRadius(8f);
+            drawable.setColor(Color.parseColor("#FFD700"));
+        }
+
+        button.setBackground(drawable);
+
+        ValueAnimator animator = ValueAnimator.ofFloat(0, 1);
+        animator.setDuration(2000);
+        animator.setRepeatCount(ValueAnimator.INFINITE);
+
+        GradientDrawable finalDrawable = drawable;
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float fraction = animation.getAnimatedFraction();
+
+
+                float sinValue = (float) Math.sin(fraction * Math.PI * 2);
+
+                if (sinValue > 0.5f) {
+                    finalDrawable.setStroke(7, Color.parseColor("#FFD700")); // ذهبي
+                } else if (sinValue > 0) {
+
+                    int alpha = (int) (255 * (0.5f - sinValue) * 2);
+                    int color = Color.argb(255, 255, 215 + (40 * alpha / 255), alpha);
+                    finalDrawable.setStroke(7, color);
+                } else if (sinValue > -0.5f) {
+                    finalDrawable.setStroke(7, Color.WHITE);
+                } else {
+                    int alpha = (int) (255 * (-0.5f - sinValue) * 2);
+                    int color = Color.argb(255, 255, 255 - (40 * alpha / 255), 255 - alpha);
+                    finalDrawable.setStroke(7, color);
+                }
+
+                button.setBackground(finalDrawable);
+            }
+        });
+
+        animator.start();
     }
 }
