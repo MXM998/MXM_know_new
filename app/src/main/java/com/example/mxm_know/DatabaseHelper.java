@@ -104,13 +104,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void addStudentPoints(long studentId, int pointsToAdd) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT " + COLUMN_POINTS + " FROM " + TABLE_STUDENTS +
+        Cursor cursor = db.rawQuery("SELECT " + COLUMN_POINTS +" , "+ COLUMN_IS_DONE + " FROM " + TABLE_STUDENTS +
                         " WHERE " + COLUMN_STUDENT_ID + " = ?",
                 new String[]{String.valueOf(studentId)});
 
+
         int currentPoints = 0;
+        int currentPoibnt_is_done = 0;
         if (cursor.moveToFirst()) {
             currentPoints = cursor.getInt(0);
+            currentPoibnt_is_done = cursor.getInt(1);
         }
         cursor.close();
 
@@ -123,7 +126,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
          if (pointsToAdd == 0)
          {
              ContentValues values_2 = new ContentValues();
-             values_2.put(COLUMN_IS_DONE, 1);
+             values_2.put(COLUMN_IS_DONE, currentPoibnt_is_done + 1);
 
              db.update(TABLE_STUDENTS, values_2,
                      COLUMN_STUDENT_ID + " = ?",
@@ -132,7 +135,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
          else
          {
              ContentValues values_2 = new ContentValues();
-             values_2.put(COLUMN_IS_DONE, 0);
+             values_2.put(COLUMN_IS_DONE, currentPoibnt_is_done - 1);
 
              db.update(TABLE_STUDENTS, values_2,
                      COLUMN_STUDENT_ID + " = ?",

@@ -6,7 +6,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="405dp"
+            android:layout_height="471dp"
             android:background="@drawable/add_point_bg"
             android:orientation="vertical"
             android:padding="24dp">
@@ -33,7 +33,23 @@
                     android:fontFamily="sans-serif-medium"
                     android:paddingStart="8dp"
                     android:text="Excellent (7 points)"
-                    android:textColor="#C1AB1E"
+                    android:textColor="#FF1C1C"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/btn_good_work"
+                    android:layout_width="match_parent"
+                    android:layout_height="59dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/good_work"
+                    android:drawableStart="@drawable/outline_add_diamond_24"
+                    android:drawablePadding="-12dp"
+                    android:elevation="4dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:paddingStart="8dp"
+                    android:text="GOOD Work (6 points)"
+                    android:textColor="#41C11E"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -50,6 +66,7 @@
                     android:paddingStart="8dp"
                     android:text="Normal (5 points)"
                     android:textSize="18sp"
+                    android:textColor="#1A241A"
                     android:textStyle="bold" />
 
                 <Button
@@ -64,6 +81,7 @@
                     android:paddingStart="8dp"
                     android:text="Not Done (0 points)"
                     android:textSize="18sp"
+                    android:textColor="#CAD5CA"
                     android:textStyle="bold" />
 
                 <Button

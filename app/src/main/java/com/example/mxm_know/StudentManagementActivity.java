@@ -92,6 +92,14 @@ public class StudentManagementActivity extends ComponentActivity {
                 if (is_done == 1) {
                     studentButton.setBackgroundResource(R.drawable.buuton_not_doing);
                 }
+                if (is_done == 2)
+                {
+                    studentButton.setBackgroundResource(R.drawable.button_not_doing_2);
+                }
+                if (is_done >= 3)
+                {
+                    studentButton.setBackgroundResource(R.drawable.red_button_shape);
+                }
 
                 studentButton.setOnClickListener(v -> showPointsDialog(studentId, name));
                 studentsContainer.addView(studentButton);
@@ -120,6 +128,7 @@ public class StudentManagementActivity extends ComponentActivity {
 
         TextView tvTitle = dialogView.findViewById(R.id.tvTitle);
         Button btnExcellent = dialogView.findViewById(R.id.btnExcellent);
+        Button btn_good_work_6 = dialogView.findViewById(R.id.btn_good_work);
         Button btnNormal = dialogView.findViewById(R.id.btnNormal);
         Button btnNotDone = dialogView.findViewById(R.id.btnNotDone);
         Button btnAI = dialogView.findViewById(R.id.btnAI);
@@ -130,6 +139,10 @@ public class StudentManagementActivity extends ComponentActivity {
 
         btnExcellent.setOnClickListener(v -> {
             updatePoints(studentId, 7);
+            dialog.dismiss();
+        });
+        btn_good_work_6.setOnClickListener(v -> {
+            updatePoints(studentId, 6);
             dialog.dismiss();
         });
         btnNormal.setOnClickListener(v -> {
