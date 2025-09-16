@@ -114,7 +114,7 @@ public class StudentManagementActivity extends ComponentActivity {
 
                 if (comb_7 >= 3)
                 {
-                    applyRotatingBorderAnimation(studentButton);
+                    applyBorderPulseAnimation(studentButton);
                 }
                 if (is_done == 1) {
                     studentButton.setBackgroundResource(R.drawable.buuton_not_doing);
@@ -205,10 +205,10 @@ public class StudentManagementActivity extends ComponentActivity {
                 button,
                 "alpha",
                 1.0f,
-                0.7f,
+                0.5f,
                 1.0f
         );
-        alphaAnim.setDuration(2000);
+        alphaAnim.setDuration(1000);
         alphaAnim.setRepeatCount(ObjectAnimator.INFINITE);
         alphaAnim.setRepeatMode(ObjectAnimator.REVERSE);
 
@@ -216,50 +216,23 @@ public class StudentManagementActivity extends ComponentActivity {
     }
 
 
-    // AI
-    private void applyRotatingBorderAnimation(Button button) {
+    private void applyBorderPulseAnimation(Button button) {
+
         GradientDrawable drawable = (GradientDrawable) button.getBackground();
-        if (drawable == null) {
-            drawable = new GradientDrawable();
-            drawable.setShape(GradientDrawable.RECTANGLE);
-            drawable.setCornerRadius(8f);
-            drawable.setColor(Color.parseColor("#FFD700"));
-        }
 
-        button.setBackground(drawable);
+        ValueAnimator borderAnim = ValueAnimator.ofArgb(
+                Color.parseColor("#FFD700"),
+                Color.parseColor("#FFFFFF"),
+                Color.parseColor("#FFD700")
+        );
 
-        ValueAnimator animator = ValueAnimator.ofFloat(0, 1);
-        animator.setDuration(2000);
-        animator.setRepeatCount(ValueAnimator.INFINITE);
-
-        GradientDrawable finalDrawable = drawable;
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                float fraction = animation.getAnimatedFraction();
-
-
-                float sinValue = (float) Math.sin(fraction * Math.PI * 2);
-
-                if (sinValue > 0.5f) {
-                    finalDrawable.setStroke(7, Color.parseColor("#FFD700")); // ذهبي
-                } else if (sinValue > 0) {
-
-                    int alpha = (int) (255 * (0.5f - sinValue) * 2);
-                    int color = Color.argb(255, 255, 215 + (40 * alpha / 255), alpha);
-                    finalDrawable.setStroke(7, color);
-                } else if (sinValue > -0.5f) {
-                    finalDrawable.setStroke(7, Color.WHITE);
-                } else {
-                    int alpha = (int) (255 * (-0.5f - sinValue) * 2);
-                    int color = Color.argb(255, 255, 255 - (40 * alpha / 255), 255 - alpha);
-                    finalDrawable.setStroke(7, color);
-                }
-
-                button.setBackground(finalDrawable);
-            }
+            borderAnim.addUpdateListener(animator -> {
+            drawable.setStroke(6, (Integer) animator.getAnimatedValue());
+            button.setBackground(drawable);
         });
 
-        animator.start();
+        borderAnim.setDuration(1500);
+        borderAnim.setRepeatCount(ValueAnimator.INFINITE);
+        borderAnim.start();
     }
 }
