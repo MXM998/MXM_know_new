@@ -2,14 +2,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- خلفية الواجهة -->
+
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
         android:src="@drawable/student_management_bg"/>
 
-    <!-- طبقة تظليل -->
+
     <View
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -30,9 +30,9 @@
         android:clipToOutline="true">
 
         <TextView
+            android:id="@+id/St_man"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Student Management"
             android:textSize="24sp"
             android:textStyle="bold"
             android:textColor="#6A0DAD"

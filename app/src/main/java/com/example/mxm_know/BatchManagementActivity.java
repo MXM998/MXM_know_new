@@ -68,7 +68,7 @@ public class BatchManagementActivity extends ComponentActivity {
 
                 Button batchButton = new Button(this);
                 batchButton.setLayoutParams(params);
-                batchButton.setText(batchName);
+                batchButton.setText(batchId +"-  "+ batchName);
                 batchButton.setTextSize(16);
                 batchButton.setAllCaps(false);
                 batchButton.setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
@@ -84,16 +84,17 @@ public class BatchManagementActivity extends ComponentActivity {
 
                 batchButton.setBackgroundResource(R.drawable.btn_batc_manger);
 
-                batchButton.setOnClickListener(v -> openBatch(batchId));
+                batchButton.setOnClickListener(v -> openBatch(batchId , batchName));
                 batchesContainer.addView(batchButton);
             }
         }
         cursor.close();
     }
 
-    private void openBatch(long batchId) {
+    private void openBatch(long batchId , String name_bt) {
         Intent intent = new Intent(this, StudentManagementActivity.class);
         intent.putExtra("BATCH_ID", batchId);
+        intent.putExtra("Batch_name", name_bt);
         startActivity(intent);
     }
 }

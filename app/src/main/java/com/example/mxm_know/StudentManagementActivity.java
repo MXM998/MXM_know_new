@@ -18,6 +18,7 @@ import androidx.activity.OnBackPressedCallback;
 
 public class StudentManagementActivity extends ComponentActivity {
     private long batchId;
+    private String Batch_name_e;
     private DatabaseHelper dbHelper;
 
     @Override
@@ -27,8 +28,11 @@ public class StudentManagementActivity extends ComponentActivity {
         setTitle("Knowledge");
 
         batchId = getIntent().getLongExtra("BATCH_ID", -1);
+        Batch_name_e = getIntent().getStringExtra("Batch_name");
         dbHelper = new DatabaseHelper(this);
 
+        TextView st_mnn = findViewById(R.id.St_man);
+        st_mnn.setText(Batch_name_e);
         Button btnAddStudent = findViewById(R.id.btnAddStudent);
         btnAddStudent.setOnClickListener(v -> openAddStudentScreen());
 
@@ -43,7 +47,7 @@ public class StudentManagementActivity extends ComponentActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        loadStudents(); // تحديث القائمة عند العودة للنشاط
+        loadStudents();
     }
 
     private void loadStudents() {
@@ -57,7 +61,7 @@ public class StudentManagementActivity extends ComponentActivity {
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
         );
-        params.setMargins(0, 0, 0, 16); // هامش سفلي 16dp
+        params.setMargins(0, 0, 0, 16);
 
         if (cursor.getCount() == 0) {
             TextView tvEmpty = new TextView(this);
@@ -79,7 +83,14 @@ public class StudentManagementActivity extends ComponentActivity {
 
                 Button studentButton = new Button(this);
                 studentButton.setLayoutParams(params);
-                studentButton.setText(name + " - Points: " + points);
+                if (is_done == 0)
+                {
+                    studentButton.setText(name + " - Points: " + points );
+                }
+                else
+                {
+                    studentButton.setText(name + " - Points: " + points + "       -" + is_done);
+                }
                 studentButton.setTextSize(16);
                 studentButton.setAllCaps(false);
                 studentButton.setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
@@ -98,7 +109,7 @@ public class StudentManagementActivity extends ComponentActivity {
                 }
                 if (is_done >= 3)
                 {
-                    studentButton.setBackgroundResource(R.drawable.red_button_shape);
+                    studentButton.setBackgroundResource(R.drawable.button_not_doing_3);
                 }
 
                 studentButton.setOnClickListener(v -> showPointsDialog(studentId, name));

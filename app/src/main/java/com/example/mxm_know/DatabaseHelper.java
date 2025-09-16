@@ -123,7 +123,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.update(TABLE_STUDENTS, values,
                 COLUMN_STUDENT_ID + " = ?",
                 new String[]{String.valueOf(studentId)});
-         if (pointsToAdd == 0)
+         if (pointsToAdd == 0 || pointsToAdd == -2)
          {
              ContentValues values_2 = new ContentValues();
              values_2.put(COLUMN_IS_DONE, currentPoibnt_is_done + 1);
@@ -135,7 +135,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
          else
          {
              ContentValues values_2 = new ContentValues();
-             values_2.put(COLUMN_IS_DONE, currentPoibnt_is_done - 1);
+             values_2.put(COLUMN_IS_DONE, 0);
 
              db.update(TABLE_STUDENTS, values_2,
                      COLUMN_STUDENT_ID + " = ?",
