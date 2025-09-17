@@ -202,10 +202,10 @@ public class StudentManagementActivity extends ComponentActivity {
                 button,
                 "alpha",
                 1.0f,
-                0.7f,
+                0.6f,
                 1.0f
         );
-        alphaAnim.setDuration(2000);
+        alphaAnim.setDuration(1500);
         alphaAnim.setRepeatCount(ObjectAnimator.INFINITE);
         alphaAnim.setRepeatMode(ObjectAnimator.REVERSE);
 
