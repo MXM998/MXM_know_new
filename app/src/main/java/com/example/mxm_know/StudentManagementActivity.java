@@ -90,9 +90,9 @@ public class StudentManagementActivity extends ComponentActivity {
 
                 Button studentButton = new Button(this);
                 studentButton.setLayoutParams(params);
-                if (is_done == 0 && comb_7 > 0)
+                if (is_done == 0 && comb_7 >= 3)
                 {
-                    studentButton.setText(name + "  Points: " + points + "    Combo7  x" + comb_7 );
+                    studentButton.setText(name + "  Points: " + points + "  Combo  x" + comb_7 );
                 }
                 else if (is_done == 0)
                 {
@@ -100,7 +100,7 @@ public class StudentManagementActivity extends ComponentActivity {
                 }
                 else
                 {
-                    studentButton.setText(name + "  Points: " + points + "       -" + is_done);
+                    studentButton.setText(name + "  Points: " + points + "     (-" + is_done+")");
                 }
                 studentButton.setTextSize(16);
                 studentButton.setAllCaps(false);
@@ -111,11 +111,8 @@ public class StudentManagementActivity extends ComponentActivity {
 
                 studentButton.setBackgroundResource(R.drawable.button_gradient_purple_pink);
 
+                setColorCombo(studentButton , comb_7);
 
-                if (comb_7 >= 3)
-                {
-                    applyBorderPulseAnimation(studentButton);
-                }
                 if (is_done == 1) {
                     studentButton.setBackgroundResource(R.drawable.buuton_not_doing);
                 }
@@ -205,34 +202,138 @@ public class StudentManagementActivity extends ComponentActivity {
                 button,
                 "alpha",
                 1.0f,
-                0.5f,
+                0.6f,
                 1.0f
         );
-        alphaAnim.setDuration(1000);
+        alphaAnim.setDuration(1500);
         alphaAnim.setRepeatCount(ObjectAnimator.INFINITE);
         alphaAnim.setRepeatMode(ObjectAnimator.REVERSE);
 
         alphaAnim.start();
+
     }
 
+    private  void setColorCombo(Button buttonsent , int Comob_strisk)
+    {
+        if (Comob_strisk == 1)
+        {
+            applyColorAnimation(buttonsent, Combo_color.Blue);
+        }
+        else if (Comob_strisk == 2)
+        {
+            applyColorAnimation(buttonsent, Combo_color.Blue_green);
+        }
+        else if (Comob_strisk == 3)
+        {
+            applyColorAnimation(buttonsent, Combo_color.Gold);
+        }
+        else if (Comob_strisk == 4)
+        {
+            applyColorAnimation(buttonsent, Combo_color.Red);
+        }
+        else if (Comob_strisk == 5)
+        {
+            applyColorAnimation(buttonsent, Combo_color.Red_Gold);
+        }
+        else if (Comob_strisk >= 6)
+        {
+            applyColorAnimation(buttonsent , Combo_color.Galactic_Purple);
+        }
+        else
+        {
+            return;
+        };
+    }
+    private void applyColorAnimation(Button buttonsent, Combo_color colorType) {
+        GradientDrawable originalDrawable = (GradientDrawable) buttonsent.getBackground();
+        GradientDrawable animatedDrawable = (GradientDrawable) originalDrawable.mutate();
+        buttonsent.setBackground(animatedDrawable);
 
-    private void applyBorderPulseAnimation(Button button) {
+        ValueAnimator colorAnim = null;
 
-        GradientDrawable drawable = (GradientDrawable) button.getBackground();
+        switch (colorType) {
+            case Blue:
+                colorAnim = ValueAnimator.ofArgb(
+                        Color.parseColor("#00FF00"),
+                        Color.parseColor("#228B22"),
+                        Color.parseColor("#FFFFFF"),
+                        Color.parseColor("#228B22"),
+                        Color.parseColor("#00FF00")
+                );
+                break;
 
-        ValueAnimator borderAnim = ValueAnimator.ofArgb(
-                Color.parseColor("#FFD700"),
-                Color.parseColor("#FFFFFF"),
-                Color.parseColor("#FFD700")
-        );
+            case Blue_green:
+                colorAnim = ValueAnimator.ofArgb(
+                        Color.parseColor("#191970"),
+                        Color.parseColor("#32CD32"),
+                        Color.parseColor("#00BFFF"),
+                        Color.parseColor("#00FA9A"),
+                        Color.parseColor("#191970")
+                );
+                break;
+            case Gold:
+                colorAnim = ValueAnimator.ofArgb(
+                        Color.parseColor("#FFD700"),
+                        Color.parseColor("#FFEC8B"),
+                        Color.parseColor("#FFFFFF"),
+                        Color.parseColor("#FFEC8B"),
+                        Color.parseColor("#FFD700")
+                );
+                break;
+            case Red:
+                colorAnim = ValueAnimator.ofArgb(
+                        Color.parseColor("#FF0000"),
+                        Color.parseColor("#DC143C"),
+                        Color.parseColor("#FFFFFF"),
+                        Color.parseColor("#B22222"),
+                        Color.parseColor("#FF0000")
+                );
+                break;
 
-            borderAnim.addUpdateListener(animator -> {
-            drawable.setStroke(6, (Integer) animator.getAnimatedValue());
-            button.setBackground(drawable);
-        });
+            case Red_Gold: // أحمر + ذهبي + برتقالي
+                colorAnim = ValueAnimator.ofArgb(
+                        Color.parseColor("#FF0000"),
+                        Color.parseColor("#FFD700"), // Gold
+                        Color.parseColor("#FF4500"), // OrangeRed
+                        Color.parseColor("#FF8C00"), // DarkOrange
+                        Color.parseColor("#FFD700"), // Gold
+                        Color.parseColor("#FFA500"), // Orange
+                        Color.parseColor("#FF0000")  // Red
+                );
+                break;
 
-        borderAnim.setDuration(1500);
-        borderAnim.setRepeatCount(ValueAnimator.INFINITE);
-        borderAnim.start();
+            case Galactic_Purple:
+                colorAnim = ValueAnimator.ofArgb(
+                        Color.parseColor("#8A2BE2"), // BlueViolet - بنفسجي مزرق
+                        Color.parseColor("#9370DB"), // MediumPurple - بنفسجي متوسط
+                        Color.parseColor("#4B0082"), // Indigo - نيلي غامق
+                        Color.parseColor("#9400D3"), // DarkViolet - بنفسجي غامق
+                        Color.parseColor("#DA70D6"), // Orchid - أوركيد
+                        Color.parseColor("#EE82EE"), // Violet - بنفسجي
+                        Color.parseColor("#8A2BE2")  // BlueViolet - يعود للبداية
+                );
+                break;
+
+
+        }
+
+        if (colorAnim != null) {
+            colorAnim.addUpdateListener(animator -> {
+                animatedDrawable.setStroke(7, (Integer) animator.getAnimatedValue());
+            });
+
+
+            colorAnim.setDuration(1500);
+            colorAnim.setRepeatCount(ValueAnimator.INFINITE);
+            colorAnim.start();
+        }
+    }
+    public enum Combo_color {
+        Blue,
+        Blue_green,
+        Gold,
+        Red,
+        Red_Gold,
+        Galactic_Purple,
     }
 }
