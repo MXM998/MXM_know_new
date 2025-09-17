@@ -111,11 +111,8 @@ public class StudentManagementActivity extends ComponentActivity {
 
                 studentButton.setBackgroundResource(R.drawable.button_gradient_purple_pink);
 
+                setColorCombo(studentButton , comb_7);
 
-                if (comb_7 >= 3)
-                {
-                    applyRotatingBorderAnimation(studentButton);
-                }
                 if (is_done == 1) {
                     studentButton.setBackgroundResource(R.drawable.buuton_not_doing);
                 }
@@ -205,7 +202,7 @@ public class StudentManagementActivity extends ComponentActivity {
                 button,
                 "alpha",
                 1.0f,
-                0.7f,
+                0.6f,
                 1.0f
         );
         alphaAnim.setDuration(2000);
@@ -213,53 +210,130 @@ public class StudentManagementActivity extends ComponentActivity {
         alphaAnim.setRepeatMode(ObjectAnimator.REVERSE);
 
         alphaAnim.start();
+
     }
 
+    private  void setColorCombo(Button buttonsent , int Comob_strisk)
+    {
+        if (Comob_strisk == 1)
+        {
+            applyColorAnimation(buttonsent, Combo_color.Blue);
+        }
+        else if (Comob_strisk == 2)
+        {
+            applyColorAnimation(buttonsent, Combo_color.Sliver);
+        }
+        else if (Comob_strisk == 3)
+        {
+            applyColorAnimation(buttonsent, Combo_color.Gold);
+        }
+        else if (Comob_strisk == 4)
+        {
+            applyColorAnimation(buttonsent, Combo_color.Red);
+        }
+        else if (Comob_strisk == 5)
+        {
+            applyColorAnimation(buttonsent, Combo_color.Red_Gold);
+        }
+        else if (Comob_strisk >= 6)
+        {
+            applyColorAnimation(buttonsent , Combo_color.Galactic_Purple);
+        }
+        else
+        {
+            return;
+        };
+    }
+    private void applyColorAnimation(Button buttonsent, Combo_color colorType) {
+        GradientDrawable originalDrawable = (GradientDrawable) buttonsent.getBackground();
+        GradientDrawable animatedDrawable = (GradientDrawable) originalDrawable.mutate();
+        buttonsent.setBackground(animatedDrawable);
 
-    // AI
-    private void applyRotatingBorderAnimation(Button button) {
-        GradientDrawable drawable = (GradientDrawable) button.getBackground();
-        if (drawable == null) {
-            drawable = new GradientDrawable();
-            drawable.setShape(GradientDrawable.RECTANGLE);
-            drawable.setCornerRadius(8f);
-            drawable.setColor(Color.parseColor("#FFD700"));
+        ValueAnimator colorAnim = null;
+
+        switch (colorType) {
+            case Blue:
+                colorAnim = ValueAnimator.ofArgb(
+                        Color.parseColor("#00CED1"), // DarkTurquoise
+                        Color.parseColor("#20B2AA"), // LightSeaGreen
+                        Color.parseColor("#FFFFFF"), // White
+                        Color.parseColor("#008B8B"), // DarkCyan
+                        Color.parseColor("#00CED1")  // DarkTurquoise
+                );
+                break;
+
+            case Sliver: // فضي
+                colorAnim = ValueAnimator.ofArgb(
+                        Color.parseColor("#C0C0C0"), // Silver
+                        Color.parseColor("#E6E6FA"), // Lavender
+                        Color.parseColor("#FFFFFF"), // White
+                        Color.parseColor("#D3D3D3"), // LightGray
+                        Color.parseColor("#C0C0C0")  // Silver
+                );
+                break;
+            case Gold:
+                colorAnim = ValueAnimator.ofArgb(
+                        Color.parseColor("#FFD700"), // Gold
+                        Color.parseColor("#FFEC8B"), // LightGoldenrod
+                        Color.parseColor("#FFFFFF"), // White
+                        Color.parseColor("#FFEC8B"), // LightGoldenrod
+                        Color.parseColor("#FFD700")  // Gold
+                );
+                break;
+            case Red:
+                colorAnim = ValueAnimator.ofArgb(
+                        Color.parseColor("#FF0000"), // Red
+                        Color.parseColor("#DC143C"), // Crimson
+                        Color.parseColor("#FFFFFF"), // White
+                        Color.parseColor("#B22222"), // FireBrick
+                        Color.parseColor("#FF0000")  // Red
+                );
+                break;
+
+            case Red_Gold: // أحمر + ذهبي + برتقالي
+                colorAnim = ValueAnimator.ofArgb(
+                        Color.parseColor("#FF0000"), // Red
+                        Color.parseColor("#FFD700"), // Gold
+                        Color.parseColor("#FF4500"), // OrangeRed
+                        Color.parseColor("#FF8C00"), // DarkOrange
+                        Color.parseColor("#FFD700"), // Gold
+                        Color.parseColor("#FFA500"), // Orange
+                        Color.parseColor("#FF0000")  // Red
+                );
+                break;
+
+            case Galactic_Purple:
+                colorAnim = ValueAnimator.ofArgb(
+                        Color.parseColor("#8A2BE2"), // BlueViolet - بنفسجي مزرق
+                        Color.parseColor("#9370DB"), // MediumPurple - بنفسجي متوسط
+                        Color.parseColor("#4B0082"), // Indigo - نيلي غامق
+                        Color.parseColor("#9400D3"), // DarkViolet - بنفسجي غامق
+                        Color.parseColor("#DA70D6"), // Orchid - أوركيد
+                        Color.parseColor("#EE82EE"), // Violet - بنفسجي
+                        Color.parseColor("#8A2BE2")  // BlueViolet - يعود للبداية
+                );
+                break;
+
+
         }
 
-        button.setBackground(drawable);
-
-        ValueAnimator animator = ValueAnimator.ofFloat(0, 1);
-        animator.setDuration(2000);
-        animator.setRepeatCount(ValueAnimator.INFINITE);
-
-        GradientDrawable finalDrawable = drawable;
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                float fraction = animation.getAnimatedFraction();
+        if (colorAnim != null) {
+            colorAnim.addUpdateListener(animator -> {
+                animatedDrawable.setStroke(7, (Integer) animator.getAnimatedValue());
+            });
 
 
-                float sinValue = (float) Math.sin(fraction * Math.PI * 2);
-
-                if (sinValue > 0.5f) {
-                    finalDrawable.setStroke(7, Color.parseColor("#FFD700")); // ذهبي
-                } else if (sinValue > 0) {
-
-                    int alpha = (int) (255 * (0.5f - sinValue) * 2);
-                    int color = Color.argb(255, 255, 215 + (40 * alpha / 255), alpha);
-                    finalDrawable.setStroke(7, color);
-                } else if (sinValue > -0.5f) {
-                    finalDrawable.setStroke(7, Color.WHITE);
-                } else {
-                    int alpha = (int) (255 * (-0.5f - sinValue) * 2);
-                    int color = Color.argb(255, 255, 255 - (40 * alpha / 255), 255 - alpha);
-                    finalDrawable.setStroke(7, color);
-                }
-
-                button.setBackground(finalDrawable);
-            }
-        });
-
-        animator.start();
+            colorAnim.setDuration(1500);
+            colorAnim.setRepeatCount(ValueAnimator.INFINITE);
+            colorAnim.start();
+        }
+    }
+    public enum Combo_color {
+        Blue,
+        Sliver,
+        Gold,
+        Red,
+        Red_Gold,
+        Galactic_Purple,
     }
 }
