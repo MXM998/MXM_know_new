@@ -90,9 +90,9 @@ public class StudentManagementActivity extends ComponentActivity {
 
                 Button studentButton = new Button(this);
                 studentButton.setLayoutParams(params);
-                if (is_done == 0 && comb_7 > 0)
+                if (is_done == 0 && comb_7 >= 3)
                 {
-                    studentButton.setText(name + "  Points: " + points + "    Combo7  x" + comb_7 );
+                    studentButton.setText(name + "  Points: " + points + "  Combo  x" + comb_7 );
                 }
                 else if (is_done == 0)
                 {
@@ -100,7 +100,7 @@ public class StudentManagementActivity extends ComponentActivity {
                 }
                 else
                 {
-                    studentButton.setText(name + "  Points: " + points + "       -" + is_done);
+                    studentButton.setText(name + "  Points: " + points + "     (-" + is_done+")");
                 }
                 studentButton.setTextSize(16);
                 studentButton.setAllCaps(false);
@@ -202,7 +202,7 @@ public class StudentManagementActivity extends ComponentActivity {
                 button,
                 "alpha",
                 1.0f,
-                0.6f,
+                0.7f,
                 1.0f
         );
         alphaAnim.setDuration(2000);
@@ -221,7 +221,7 @@ public class StudentManagementActivity extends ComponentActivity {
         }
         else if (Comob_strisk == 2)
         {
-            applyColorAnimation(buttonsent, Combo_color.Sliver);
+            applyColorAnimation(buttonsent, Combo_color.Blue_green);
         }
         else if (Comob_strisk == 3)
         {
@@ -254,45 +254,45 @@ public class StudentManagementActivity extends ComponentActivity {
         switch (colorType) {
             case Blue:
                 colorAnim = ValueAnimator.ofArgb(
-                        Color.parseColor("#00CED1"), // DarkTurquoise
-                        Color.parseColor("#20B2AA"), // LightSeaGreen
-                        Color.parseColor("#FFFFFF"), // White
-                        Color.parseColor("#008B8B"), // DarkCyan
-                        Color.parseColor("#00CED1")  // DarkTurquoise
+                        Color.parseColor("#00FF00"),
+                        Color.parseColor("#228B22"),
+                        Color.parseColor("#FFFFFF"),
+                        Color.parseColor("#228B22"),
+                        Color.parseColor("#00FF00")
                 );
                 break;
 
-            case Sliver: // فضي
+            case Blue_green:
                 colorAnim = ValueAnimator.ofArgb(
-                        Color.parseColor("#C0C0C0"), // Silver
-                        Color.parseColor("#E6E6FA"), // Lavender
-                        Color.parseColor("#FFFFFF"), // White
-                        Color.parseColor("#D3D3D3"), // LightGray
-                        Color.parseColor("#C0C0C0")  // Silver
+                        Color.parseColor("#191970"),
+                        Color.parseColor("#32CD32"),
+                        Color.parseColor("#00BFFF"),
+                        Color.parseColor("#00FA9A"),
+                        Color.parseColor("#191970")
                 );
                 break;
             case Gold:
                 colorAnim = ValueAnimator.ofArgb(
-                        Color.parseColor("#FFD700"), // Gold
-                        Color.parseColor("#FFEC8B"), // LightGoldenrod
-                        Color.parseColor("#FFFFFF"), // White
-                        Color.parseColor("#FFEC8B"), // LightGoldenrod
-                        Color.parseColor("#FFD700")  // Gold
+                        Color.parseColor("#FFD700"),
+                        Color.parseColor("#FFEC8B"),
+                        Color.parseColor("#FFFFFF"),
+                        Color.parseColor("#FFEC8B"),
+                        Color.parseColor("#FFD700")
                 );
                 break;
             case Red:
                 colorAnim = ValueAnimator.ofArgb(
-                        Color.parseColor("#FF0000"), // Red
-                        Color.parseColor("#DC143C"), // Crimson
-                        Color.parseColor("#FFFFFF"), // White
-                        Color.parseColor("#B22222"), // FireBrick
-                        Color.parseColor("#FF0000")  // Red
+                        Color.parseColor("#FF0000"),
+                        Color.parseColor("#DC143C"),
+                        Color.parseColor("#FFFFFF"),
+                        Color.parseColor("#B22222"),
+                        Color.parseColor("#FF0000")
                 );
                 break;
 
             case Red_Gold: // أحمر + ذهبي + برتقالي
                 colorAnim = ValueAnimator.ofArgb(
-                        Color.parseColor("#FF0000"), // Red
+                        Color.parseColor("#FF0000"),
                         Color.parseColor("#FFD700"), // Gold
                         Color.parseColor("#FF4500"), // OrangeRed
                         Color.parseColor("#FF8C00"), // DarkOrange
@@ -330,7 +330,7 @@ public class StudentManagementActivity extends ComponentActivity {
     }
     public enum Combo_color {
         Blue,
-        Sliver,
+        Blue_green,
         Gold,
         Red,
         Red_Gold,
