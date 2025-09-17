@@ -85,17 +85,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return true;
     }
 
-
-//    public Cursor getStudentsByBatch(long batchId) {
-//        SQLiteDatabase db = this.getReadableDatabase();
-//        return db.query(TABLE_STUDENTS,
-//                new String[]{COLUMN_STUDENT_ID, COLUMN_STUDENT_NAME,
-//                        COLUMN_PHONE, COLUMN_POINTS, COLUMN_IS_DONE},
-//                COLUMN_BATCH_ID_FK + " = ?",
-//                new String[]{String.valueOf(batchId)},
-//                null, null, null);
-//    }
-//
     public Cursor getStudentsByBatch(long batchId) {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.query(TABLE_STUDENTS, null,

@@ -1,6 +1,6 @@
 package com.example.mxm_know;
 
-import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -18,7 +18,6 @@ import android.widget.TextView;
 
 import androidx.activity.ComponentActivity;
 import androidx.activity.OnBackPressedCallback;
-import android.animation.ObjectAnimator;
 
 
 
@@ -238,6 +237,7 @@ public class StudentManagementActivity extends ComponentActivity {
         else if (Comob_strisk >= 6)
         {
             applyColorAnimation(buttonsent , Combo_color.Galactic_Purple);
+            applyShineAnimation(buttonsent);
         }
         else
         {
@@ -290,7 +290,7 @@ public class StudentManagementActivity extends ComponentActivity {
                 );
                 break;
 
-            case Red_Gold: // أحمر + ذهبي + برتقالي
+            case Red_Gold:
                 colorAnim = ValueAnimator.ofArgb(
                         Color.parseColor("#FF0000"),
                         Color.parseColor("#FFD700"), // Gold
@@ -304,13 +304,13 @@ public class StudentManagementActivity extends ComponentActivity {
 
             case Galactic_Purple:
                 colorAnim = ValueAnimator.ofArgb(
-                        Color.parseColor("#8A2BE2"), // BlueViolet - بنفسجي مزرق
-                        Color.parseColor("#9370DB"), // MediumPurple - بنفسجي متوسط
-                        Color.parseColor("#4B0082"), // Indigo - نيلي غامق
-                        Color.parseColor("#9400D3"), // DarkViolet - بنفسجي غامق
-                        Color.parseColor("#DA70D6"), // Orchid - أوركيد
-                        Color.parseColor("#EE82EE"), // Violet - بنفسجي
-                        Color.parseColor("#8A2BE2")  // BlueViolet - يعود للبداية
+                        Color.parseColor("#8A2BE2"),
+                        Color.parseColor("#9370DB"),
+                        Color.parseColor("#4B0082"),
+                        Color.parseColor("#9400D3"),
+                        Color.parseColor("#DA70D6"),
+                        Color.parseColor("#EE82EE"),
+                        Color.parseColor("#8A2BE2")
                 );
                 break;
 
