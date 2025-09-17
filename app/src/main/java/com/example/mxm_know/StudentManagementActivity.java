@@ -7,12 +7,14 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -126,6 +128,11 @@ public class StudentManagementActivity extends ComponentActivity {
 
                 studentButton.setOnClickListener(v -> showPointsDialog(studentId, name));
                 studentsContainer.addView(studentButton);
+
+                studentButton.setOnLongClickListener(v -> {
+                    showEditDeleteDialog(studentId, name);
+                    return true;
+                });
             }
         }
         cursor.close();
@@ -335,5 +342,69 @@ public class StudentManagementActivity extends ComponentActivity {
         Red,
         Red_Gold,
         Galactic_Purple,
+    }
+    private void showEditDeleteDialog(long studentId, String studentName) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_student_options, null);
+        builder.setView(dialogView);
+
+        TextView tvTitle = dialogView.findViewById(R.id.tvTitle);
+        Button btnEdit = dialogView.findViewById(R.id.btnEdit);
+        Button btnDelete = dialogView.findViewById(R.id.btnDelete);
+
+        tvTitle.setText("Options for " + studentName);
+
+        AlertDialog dialog = builder.create();
+
+        btnEdit.setOnClickListener(v -> {
+            dialog.dismiss();
+            showEditStudentDialog(studentId, studentName);
+        });
+
+        btnDelete.setOnClickListener(v -> {
+            dialog.dismiss();
+            showDeleteConfirmationDialog(studentId, studentName);
+        });
+
+        dialog.show();
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setWindowAnimations(R.style.DialogAnimation);
+            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
+    }
+
+
+    private void showEditStudentDialog(long studentId, String currentName) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Edit Student");
+
+        final EditText input = new EditText(this);
+        input.setText(currentName);
+        input.setSelection(input.getText().length());
+        builder.setView(input);
+
+        builder.setPositiveButton("Save", (dialog, which) -> {
+            String newName = input.getText().toString().trim();
+            if (!newName.isEmpty()) {
+                dbHelper.updateStudent(studentId, newName);
+                loadStudents();
+            }
+        });
+
+        builder.setNegativeButton("Cancel", null);
+        builder.show();
+    }
+
+    private void showDeleteConfirmationDialog(long studentId, String studentName) {
+        new AlertDialog.Builder(this)
+                .setTitle("Confirm Delete")
+                .setMessage("Are you sure you want to delete " + studentName + "?")
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    dbHelper.deleteStudent(studentId);
+                    loadStudents();
+                })
+                .setNegativeButton("No", null)
+                .show();
     }
 }

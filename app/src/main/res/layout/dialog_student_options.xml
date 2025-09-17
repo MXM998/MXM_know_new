@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="#80000000">
+
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="260dp"
+        android:background="@drawable/dialog_options_bg"
+        android:elevation="8dp"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="32dp"
+            android:text="Student Options"
+            android:textColor="#5D4037"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btnEdit"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/btn_edit_bg"
+            android:text="ُEDIT"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+           />
+
+        <Button
+            android:id="@+id/btnDelete"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:background="@drawable/btn_delete_bg"
+            android:text="DELETE"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+           />
+
+    </LinearLayout>
+</LinearLayout>

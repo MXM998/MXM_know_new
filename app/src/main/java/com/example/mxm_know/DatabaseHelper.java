@@ -161,4 +161,40 @@ public class DatabaseHelper extends SQLiteOpenHelper {
          }
         db.close();
     }
+    // دالة تحديث اسم الطالب
+    public boolean updateStudent(long studentId, String newName) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_STUDENT_NAME, newName);
+        int rowsAffected = db.update(TABLE_STUDENTS, values,
+                COLUMN_STUDENT_ID + " = ?",
+                new String[]{String.valueOf(studentId)});
+        return rowsAffected > 0;
+    }
+
+    // دالة حذف طالب
+    public boolean deleteStudent(long studentId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int rowsAffected = db.delete(TABLE_STUDENTS,
+                COLUMN_STUDENT_ID + " = ?",
+                new String[]{String.valueOf(studentId)});
+        return rowsAffected > 0;
+    }
+
+    // دالة حذف دفعة (مع حذف جميع طلابها)
+    public boolean deleteBatch(long batchId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // أولاً حذف جميع طلاب الدفعة
+        db.delete(TABLE_STUDENTS,
+                COLUMN_BATCH_ID_FK + " = ?",
+                new String[]{String.valueOf(batchId)});
+
+        // ثم حذف الدفعة
+        int rowsAffected = db.delete(TABLE_BATCHES,
+                COLUMN_BATCH_ID + " = ?",
+                new String[]{String.valueOf(batchId)});
+
+        return rowsAffected > 0;
+    }
 }

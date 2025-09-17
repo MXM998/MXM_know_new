@@ -2,12 +2,16 @@ package com.example.mxm_know;
 
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -65,10 +69,11 @@ public class BatchManagementActivity extends ComponentActivity {
             while (cursor.moveToNext()) {
                 @SuppressLint("Range") long batchId = cursor.getLong(cursor.getColumnIndex(DatabaseHelper.COLUMN_BATCH_ID));
                 @SuppressLint("Range") String batchName = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_BATCH_NAME));
+                @SuppressLint("Range") long Bathc_number = cursor.getLong(cursor.getColumnIndex(DatabaseHelper.COLUMN_BATCH_NUMBER));
 
                 Button batchButton = new Button(this);
                 batchButton.setLayoutParams(params);
-                batchButton.setText(batchId +"-  "+ batchName);
+                batchButton.setText(batchId +"-  Name : "+ batchName + "   Number : " + Bathc_number);
                 batchButton.setTextSize(16);
                 batchButton.setAllCaps(false);
                 batchButton.setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
@@ -86,6 +91,12 @@ public class BatchManagementActivity extends ComponentActivity {
 
                 batchButton.setOnClickListener(v -> openBatch(batchId , batchName));
                 batchesContainer.addView(batchButton);
+
+                batchButton.setOnLongClickListener(v -> {
+                    showBatchOptionsDialog(batchId, batchName);
+                    return true;
+                });
+
             }
         }
         cursor.close();
@@ -96,5 +107,41 @@ public class BatchManagementActivity extends ComponentActivity {
         intent.putExtra("BATCH_ID", batchId);
         intent.putExtra("Batch_name", name_bt);
         startActivity(intent);
+    }
+    private void showBatchOptionsDialog(long batchId, String batchName) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_batch_options, null);
+        builder.setView(dialogView);
+
+        TextView tvTitle = dialogView.findViewById(R.id.tvTitle);
+        Button btnDeleteBatch = dialogView.findViewById(R.id.btnDeleteBatch);
+
+        tvTitle.setText("Options for " + batchName);
+
+        AlertDialog dialog = builder.create();
+
+        btnDeleteBatch.setOnClickListener(v -> {
+            dialog.dismiss();
+            showDeleteBatchDialog(batchId, batchName);
+        });
+
+        dialog.show();
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setWindowAnimations(R.style.DialogAnimation);
+            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
+    }
+
+    private void showDeleteBatchDialog(long batchId, String batchName) {
+        new AlertDialog.Builder(this)
+                .setTitle("Confirm Delete")
+                .setMessage("Are you sure you want to delete the batch " + batchName + " and all its students?")
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    dbHelper.deleteBatch(batchId);
+                    loadBatches();
+                })
+                .setNegativeButton("No", null)
+                .show();
     }
 }
